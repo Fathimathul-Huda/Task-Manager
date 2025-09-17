@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./task.css">
+</head>
+<body>
+    <h1> Task Manager</h1>
+    <div id="task-form">
+        <h2>Add Task</h2>
+        <form id="newTaskForm">
+            <input type="text" id="title" placeholder="Task title" >
+            <input type="text" id="description" placeholder="Description">
+            <input type="date" id="DueDate">
+
+            <select id="status">
+                <option value="pending">pending</option>
+                <option value="in-progress">in progress</option>
+                <option value="completed">completed</option>
+            </select>
+
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+ 
+    <!-- script -->
+    <script>
+        document.getElementById('newTaskForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const status = document.getElementById('status').value;
+            const DueDate = document.getElementById('DueDate').value;
+
+            const response = await fetch('http://localhost:3000', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, description, status, DueDate })
+            });
+
+            if (response.ok) {
+                document.getElementById('title').value = '';
+                document.getElementById('description').value = '';
+                document.getElementById('status').value = 'pending';
+                document.getElementById('DueDate').value = '';
+                console.log("Data added")
+            } else {
+                console.error('data not found:', response.statusText);
+            }
+        });
+    </script>
+</body>
+</html>
